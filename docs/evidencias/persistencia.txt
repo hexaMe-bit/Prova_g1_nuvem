@@ -1,0 +1,25 @@
+﻿TESTE DE PERSISTENCIA DOS DADOS
+Data: 16/10/2026
+
+Estado antes de docker compose down:
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Comando executado:
+docker compose down
+
+Resultado:
+Os contêineres web e db e a rede do projeto foram removidos.
+Os volumes nomeados dados_banco e fotos permaneceram existentes.
+
+Comando de recriacao:
+docker compose up -d
+
+Verificacao:
+O servico db iniciou com status healthy.
+O servico web iniciou e publicou a porta 8080 do host para a porta 5000 do contêiner.
+
+Estado depois da recriacao:
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Conclusao:
+Os seis registros e as duas fotos continuaram disponiveis apos a recriacao dos contêineres, demonstrando a persistencia dos dados neste teste.

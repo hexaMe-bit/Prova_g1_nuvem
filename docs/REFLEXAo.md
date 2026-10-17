@@ -1,0 +1,11 @@
+1. ````O serviço web consegue se conectar ao banco usando o nome db porque o Docker possui um DNS interno que traduz automaticamente os nomes dos contêineres para seus respectivos endereços IP na rede.  Esse mecanismo de resolução de nomes é acionado sempre que dois ou mais contêineres estão conectados à mesma rede definida pelo usuário (custom bridge network), permitindo que um contêiner acesse outro apenas pelo seu nome ou nome do serviço, sem necessidade de expor portas para o host ou conhecer IPs dinâmicos.````
+
+2. ````A principal diferença é que o bind mount mapeia um caminho específico do sistema de arquivos do host diretamente para o contêiner, enquanto o volume nomeado é gerenciado pelo Docker (geralmente em /var/lib/docker/volumes), sendo mais portátil e seguro para dados persistentes. Justificativa da configuração: init.sql como bind mount: Arquivos de configuração e scripts de inicialização são geridos externamente. Usar um bind mount permite que alterações no arquivo no host sejam refletidas instantaneamente no contêiner, facilitando o desenvolvimento e a gestão de código-fonte ou configurações versionada.````
+
+3. ````Não, a alteração no arquivo init.sql não será aplicada automaticamente. Isso ocorre porque os scripts de inicialização são executados apenas na primeira criação do container. Para aplicar a mudança na estrutura do banco (como adicionar uma coluna) sem perder os dados existentes, você deve seguir uma abordagem de migração em vez de reinicialização.````
+
+4. ````O comando depends_on sem uma condição específica aguarda apenas que o contêiner do banco de dados esteja em execução (service_started), mas não garante que o processo interno do banco já tenha iniciado e esteja aceitando conexões.````
+
+5. ``A ordem das instruções no Dockerfile é crítica porque o Docker utiliza um sistema de cache de [camadas sequencial] e imutável.  Quando as instruções são organizadas copiando primeiro o requirements.txt, executando o pip install e só então copiando o código da aplicação (COPY . .), cada etapa gera uma camada independente. O cache é invalidado apenas a partir do ponto de mudança: se o requirements.txt` não alterar, a camada de instalação de dependências é reutilizada do cache, mesmo que o código da aplicação mude.``
+
+6. 
